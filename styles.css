@@ -17,8 +17,13 @@ html {
 }
 
 body {
+  height: 100vh;
   background-color: #f0f2f5;
   font-family: 'Poppins', sans-serif;
+}
+
+main {
+  min-height: 100%;
 }
 
 .sr-only {
@@ -89,6 +94,10 @@ button:hover {
 
 .button.cancel:hover {
   opacity: 1;
+}
+
+.btn-delete {
+  cursor: pointer;
 }
 
 /*  Header */
