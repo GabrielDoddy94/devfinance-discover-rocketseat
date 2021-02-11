@@ -7,6 +7,25 @@ const Modal = {
   },
 };
 
+const CurrentDate = {
+  dateContainer: document.getElementById('timer-js'),
+
+  formatDate() {
+    const now = new Date();
+    const options = {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      weekday: 'long',
+    };
+
+    this.dateContainer.textContent = new Intl.DateTimeFormat(
+      'pt-BR',
+      options
+    ).format(now);
+  },
+};
+
 const Storage = {
   get() {
     return JSON.parse(localStorage.getItem('dev.finances:transactions')) || [];
@@ -99,6 +118,24 @@ const DOM = {
     document.getElementById(
       'total-display-js'
     ).innerHTML = Utils.formatCurrency(Transaction.total());
+  },
+
+  updateTotalStyle() {
+    let totalCard = document.getElementById('card-total-js');
+
+    if (Transaction.total() > 0) {
+      totalCard.classList.add('positive');
+      totalCard.classList.remove('negative');
+      totalCard.classList.remove('total');
+    } else if (Transaction.total() < 0) {
+      totalCard.classList.add('negative');
+      totalCard.classList.remove('positive');
+      totalCard.classList.remove('total');
+    } else {
+      totalCard.classList.add('total');
+      totalCard.classList.remove('positive');
+      totalCard.classList.remove('negative');
+    }
   },
 
   clearTransactions() {
@@ -194,7 +231,9 @@ const App = {
   init() {
     Transaction.all.forEach(DOM.addTransaction);
 
+    CurrentDate.formatDate();
     DOM.updateBalance();
+    DOM.updateTotalStyle();
 
     Storage.set(Transaction.all);
   },
